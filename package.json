@@ -1,0 +1,30 @@
+{
+  "name": "odin-book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm run dev -w backend",
+    "start:backend": "npm start -w backend",
+    "build:backend": "npm run build -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "build:frontend": "npm run build -w frontend",
+    "preview": "npm run dev -w backend && npm run preview -w frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syeero7/odin-book.git"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syeero7/odin-book/issues"
+  },
+  "homepage": "https://github.com/syeero7/odin-book#readme"
+}
