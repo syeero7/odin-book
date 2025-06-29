@@ -2,7 +2,7 @@ import express, { type ErrorRequestHandler } from "express";
 import cors from "cors";
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github2";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 
 import prisma from "./lib/prisma-client";
 import { User } from "@prisma/client";
@@ -88,6 +88,10 @@ server.use(async (req, res, next) => {
 
     next();
   } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      return void res.redirect(`${BACKEND_URL}/auth/github`);
+    }
+
     next(error);
   }
 });
