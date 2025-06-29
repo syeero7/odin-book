@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "ts-node watch --env-file=.env src/server.ts",
+    "dev": "tsx watch --env-file=.env src/server.ts",
     "start": "node dist/server.js",
     "build": "npm install && tsc && npx prisma migrate deploy"
   },
@@ -36,7 +36,7 @@
     "eslint": "^9.29.0",
     "globals": "^16.2.0",
     "prisma": "^6.10.1",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1"
   }
