@@ -7,9 +7,9 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "skipLibCheck": true,
-    "include": ["src/**/*"],
-    "exclude": ["node_modules"]
+    "skipLibCheck": true
   },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "$schema": "https://json.schemastore.org/tsconfig"
 }
