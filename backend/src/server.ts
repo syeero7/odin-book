@@ -82,7 +82,7 @@ server.use(async (req, res, next) => {
     if (!authorization) return void res.sendStatus(401);
 
     const token = authorization.split(" ")[1];
-    const payload = jwt.verify(token, process.env.SECRET!) as { id: number };
+    const payload = jwt.verify(token, JWT_SECRET!) as { id: number };
     const user = await prisma.user.findUnique({ where: { id: payload.id } });
     req.user = user || undefined;
 
@@ -91,7 +91,7 @@ server.use(async (req, res, next) => {
     next(error);
   }
 });
-// server.use("/users");
+server.use("/users", routes.users);
 // server.use("/posts");
 // server.use("/notifications");
 

@@ -1,0 +1,174 @@
+import asyncHandler from "express-async-handler";
+import { validationResult, param } from "express-validator";
+import { imageSize } from "image-size";
+import { type User } from "@prisma/client";
+import { type Request } from "express";
+import prisma from "../lib/prisma-client";
+import { uploadFile } from "../lib/cloudinary";
+import upload from "../lib/multer";
+
+export const getUserByUsername = asyncHandler(async (req, res) => {
+  const userId = (req.user as User).id;
+  const query = req.query.search || "";
+  const users = await prisma.user.findMany({
+    where: {
+      username: {
+        startsWith: query as string,
+      },
+      NOT: { id: userId },
+    },
+  });
+
+  res.json({ users });
+});
+
+type UserParams = Request["params"] & { userId: number };
+
+export const getUserProfile = [
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+
+    const { userId } = req.params;
+    const profile = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+            posts: true,
+            likes: true,
+          },
+        },
+      },
+    });
+
+    if (!profile) return void res.sendStatus(404);
+    res.json({ profile });
+  }),
+];
+
+export const getUserFollowers = [
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+
+    const { userId } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { followers: true },
+    });
+
+    if (!user) return void res.sendStatus(404);
+    res.json({ followers: user.followers });
+  }),
+];
+
+export const getUserFollowing = [
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+
+    const { userId } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { following: true },
+    });
+
+    if (!user) return void res.sendStatus(404);
+    res.json({ following: user.following });
+  }),
+];
+
+export const updateUserAvatar = [
+  upload.single("avatar"),
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+    if (!req.file) return void res.status(400).json({ message: "No file" });
+    const imageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const fileSize = 3; // 3MB
+    const imgSize = 200; // 200px
+
+    const { mimetype, size, buffer } = req.file;
+
+    if (!imageTypes.includes(mimetype)) {
+      return void res
+        .status(400)
+        .json({ message: "File format must be either JPEG or PNG" });
+    }
+
+    if (size / (1024 * 1024) > fileSize) {
+      return void res.status(400).json({
+        message: `File size exceeds the maximum limit of ${fileSize}MB`,
+      });
+    }
+
+    const { height, width } = imageSize(buffer);
+    if (height !== imgSize || width !== imgSize) {
+      return void res
+        .status(400)
+        .json({ message: `Avatar must be ${imgSize} x ${imgSize}` });
+    }
+
+    const { userId } = req.params;
+    const url = await uploadFile(req.file, `${userId}/avatar`);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { avatarUrl: url },
+    });
+
+    res.sendStatus(204);
+  }),
+];
+
+export const followUser = [
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+
+    const user1 = (req.user as User).id;
+    const { userId: user2 } = req.params;
+    await prisma.user.update({
+      where: { id: user1 },
+      data: {
+        following: {
+          connect: {
+            id: user2,
+          },
+        },
+      },
+    });
+
+    res.sendStatus(204);
+  }),
+];
+
+export const unfollowUser = [
+  param("userId").toInt().isNumeric(),
+  asyncHandler<UserParams>(async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) return void res.sendStatus(404);
+
+    const user1 = (req.user as User).id;
+    const { userId: user2 } = req.params;
+    await prisma.user.update({
+      where: { id: user1 },
+      data: {
+        following: {
+          disconnect: {
+            id: user2,
+          },
+        },
+      },
+    });
+
+    res.sendStatus(204);
+  }),
+];
