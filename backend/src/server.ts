@@ -104,7 +104,7 @@ server.use((req, res, next) => {
 });
 server.use("/users", routes.users);
 server.use("/posts", routes.posts);
-// server.use("/notifications");
+server.use("/notifications", routes.notifications);
 
 server.use(((error, _req, res, _next) => {
   console.error(error);
