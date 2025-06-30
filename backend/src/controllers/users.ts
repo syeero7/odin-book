@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { validationResult, param } from "express-validator";
+import { validationResult, param, query } from "express-validator";
 import { imageSize } from "image-size";
 import { type User } from "@prisma/client";
 import { type Request } from "express";
@@ -9,7 +9,7 @@ import upload from "../lib/multer";
 
 export const getUserByUsername = asyncHandler(async (req, res) => {
   const userId = (req.user as User).id;
-  const query = req.query.search || "";
+  const query = req.query.q || "";
   const users = await prisma.user.findMany({
     where: {
       username: {
@@ -129,42 +129,39 @@ export const updateUserAvatar = [
 
 export const followUser = [
   param("userId").toInt().isNumeric(),
+  query("follow").toBoolean().isBoolean(),
   asyncHandler<UserParams>(async (req, res) => {
     const result = validationResult(req);
-    if (!result.isEmpty()) return void res.sendStatus(404);
+    if (!result.isEmpty()) {
+      const errors = result.mapped();
+      return void res.sendStatus(errors["userId"] ? 404 : 400);
+    }
 
     const user1 = (req.user as User).id;
     const { userId: user2 } = req.params;
-    await prisma.user.update({
-      where: { id: user1 },
-      data: {
-        following: {
-          connect: {
-            id: user2,
+
+    if (req.query.follow) {
+      await prisma.user.update({
+        where: { id: user1 },
+        data: {
+          following: {
+            connect: {
+              id: user2,
+            },
           },
         },
-      },
-    });
-    await prisma.notification.create({
-      data: {
-        type: "FOLLOW",
-        senderId: user1,
-        recipientId: user2,
-      },
-    });
+      });
+      await prisma.notification.create({
+        data: {
+          type: "FOLLOW",
+          senderId: user1,
+          recipientId: user2,
+        },
+      });
 
-    res.sendStatus(204);
-  }),
-];
+      return void res.sendStatus(204);
+    }
 
-export const unfollowUser = [
-  param("userId").toInt().isNumeric(),
-  asyncHandler<UserParams>(async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) return void res.sendStatus(404);
-
-    const user1 = (req.user as User).id;
-    const { userId: user2 } = req.params;
     await prisma.user.update({
       where: { id: user1 },
       data: {
