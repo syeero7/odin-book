@@ -16,6 +16,7 @@ const {
   JWT_SECRET,
   BACKEND_URL,
   FRONTED_URL,
+  GUEST_USERNAME,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
 } = process.env;
@@ -94,6 +95,12 @@ server.use(async (req, res, next) => {
 
     next(error);
   }
+});
+server.use((req, res, next) => {
+  if ((req.user as User).username === GUEST_USERNAME && req.method === "DELETE")
+    return void res.sendStatus(403);
+
+  next();
 });
 server.use("/users", routes.users);
 // server.use("/posts");
