@@ -145,6 +145,13 @@ export const followUser = [
         },
       },
     });
+    await prisma.notification.create({
+      data: {
+        type: "FOLLOW",
+        senderId: user1,
+        recipientId: user2,
+      },
+    });
 
     res.sendStatus(204);
   }),
