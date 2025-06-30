@@ -256,6 +256,7 @@ export const createComment = [
       await prisma.notification.create({
         data: {
           type: "COMMENT",
+          postId,
           senderId: userId,
           recipientId: authorId,
         },
