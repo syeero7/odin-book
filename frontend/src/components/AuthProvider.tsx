@@ -27,7 +27,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!user) {
       storage.removeItem();
-      navigate("/");
+      navigate("/login");
       return;
     }
 
