@@ -12,13 +12,12 @@ export const authenticate = passport.authenticate("github", {
 export const login = [
   passport.authenticate("github", { session: false }),
   asyncHandler(async (req, res) => {
-    const token = jwt.sign(
-      { id: (req.user as User).id },
-      process.env.JWT_SECRET!,
-      { expiresIn: "1d" }
-    );
+    const { id, username } = req.user as User;
+    const token = jwt.sign({ id }, process.env.JWT_SECRET!, {
+      expiresIn: "1d",
+    });
 
-    res.json({ token });
+    res.json({ token, id, username });
   }),
 ];
 
@@ -27,7 +26,9 @@ export const guestLogin = asyncHandler(async (_req, res) => {
   const guest = await prisma.user.findUnique({
     where: { username: GUEST_USERNAME! },
   });
-  const token = jwt.sign({ id: guest?.id }, JWT_SECRET!, { expiresIn: "1d" });
+  if (!guest) throw new Error("Guest not found");
+  const { id, username } = guest;
+  const token = jwt.sign({ id }, JWT_SECRET!, { expiresIn: "1d" });
 
-  res.json({ token });
+  res.json({ token, id, username });
 });
