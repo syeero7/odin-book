@@ -6,14 +6,10 @@
   --accent: hsl(0, 84%, 60%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: hsl(244, 55%, 94%);
-    --background: hsl(240, 47%, 3%);
-    --primary: hsl(240, 6%, 90%);
-    --secondary: hsl(240, 5%, 66%);
-    --accent: hsl(0, 84%, 40%);
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 #root {
@@ -32,10 +28,15 @@ body {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  /* padding: 0.6em 1.2em; */
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
+}
+
+.lucide {
+  width: 32px;
+  height: 32px;
+  color: var(--primary);
 }

@@ -1,0 +1,55 @@
+.navbar {
+  min-width: 300px;
+  max-width: 350px;
+  padding: 1em 0.6em;
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+  }
+
+  svg {
+    stroke-width: 1.8px;
+  }
+
+  li {
+    list-style: none;
+
+    &:last-child {
+      margin-left: auto;
+
+      button {
+        background-color: transparent;
+
+        svg {
+          color: var(--accent);
+          transition: stroke-width 0.25s ease-in-out;
+        }
+
+        &:hover,
+        &:active,
+        &:focus-visible {
+          svg {
+            stroke-width: 2.8px;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    svg {
+      transition: stroke-width 0.25s ease-in-out;
+    }
+
+    &:active,
+    &[aria-current="page"],
+    &:focus-visible,
+    &:hover {
+      svg {
+        stroke-width: 2.8px;
+      }
+    }
+  }
+}
