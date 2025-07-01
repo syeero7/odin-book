@@ -13,7 +13,7 @@ import { useAuth } from "../AuthProvider";
 function Navbar() {
   const { user, logout } = useAuth();
 
-  //   if (!user) return null;
+  if (!user) return null;
 
   return (
     <nav className={styles.navbar}>
@@ -31,7 +31,7 @@ function Navbar() {
         </li>
 
         <li>
-          <NavLink to={"/new"} viewTransition title="new post">
+          <NavLink to={"/posts/new"} viewTransition title="new post">
             <SquarePen />
           </NavLink>
         </li>
@@ -43,7 +43,7 @@ function Navbar() {
         </li>
 
         <li>
-          <NavLink to={"/profile"} viewTransition title="profile">
+          <NavLink to={`/users/${user.id}`} viewTransition title="profile">
             <CircleUser />
           </NavLink>
         </li>
