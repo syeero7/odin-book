@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import AuthProvider from "./components/AuthProvider";
-import Navbar from "./components/Navbar";
+import AuthProvider from "@/components/AuthProvider";
+import Navbar from "@/components/Navbar";
 
 function App() {
   return (

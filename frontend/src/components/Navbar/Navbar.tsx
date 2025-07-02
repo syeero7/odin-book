@@ -7,8 +7,8 @@ import {
   SquarePen,
   LogOut,
 } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
 import styles from "./Navbar.module.css";
-import { useAuth } from "../AuthProvider";
 
 function Navbar() {
   const { user, logout } = useAuth();
