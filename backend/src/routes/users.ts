@@ -3,6 +3,7 @@ import * as controllers from "../controllers/users";
 
 const router = Router();
 
+router.get("/me", controllers.getCurrentUser);
 router.get("/search", controllers.getUserByUsername);
 router.get("/:userId/profile", controllers.getUserProfile);
 router.get("/:userId/followers", controllers.getUserFollowers);

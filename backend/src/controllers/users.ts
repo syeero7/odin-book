@@ -7,6 +7,19 @@ import prisma from "../lib/prisma-client";
 import { uploadFile } from "../lib/cloudinary";
 import upload from "../lib/multer";
 
+export const getCurrentUser = asyncHandler(async (req, res) => {
+  const userId = (req.user as User).id;
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      username: true,
+    },
+  });
+
+  res.json({ user });
+});
+
 export const getUserByUsername = asyncHandler(async (req, res) => {
   const userId = (req.user as User).id;
   const query = req.query.q || "";
