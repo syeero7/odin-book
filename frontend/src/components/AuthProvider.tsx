@@ -2,6 +2,7 @@ import { createContext, use, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { type AuthUser } from "@/types";
 import { logout as _logout } from "@/lib/api";
+import * as storage from "@/lib/storage";
 
 type AuthCtx = {
   user: AuthUser | null;
@@ -29,11 +30,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
     if (!res.ok) throw res;
 
     setUser(null);
+    storage.removeItem();
     return navigate("/login", { viewTransition: true });
   };
 
   const login = (user: AuthUser) => {
     setUser(user);
+    storage.setItem(user);
     return navigate("/", { viewTransition: true, replace: true });
   };
 
