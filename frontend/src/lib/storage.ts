@@ -1,6 +1,6 @@
-import { type AuthUser } from "../types";
+import { type AuthUser } from "@/types";
 
-const STORAGE: "localStorage" | "sessionStorage" = "sessionStorage";
+const STORAGE: "localStorage" | "sessionStorage" = "localStorage";
 const STORAGE_KEY = "USER";
 
 export const getItem = (): AuthUser | null => {

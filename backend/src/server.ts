@@ -3,6 +3,7 @@ import cors from "cors";
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github2";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 import prisma from "./lib/prisma-client";
 import { User } from "@prisma/client";
@@ -14,8 +15,9 @@ const {
   PORT,
   NODE_ENV,
   JWT_SECRET,
+  COOKIE_NAME,
   BACKEND_URL,
-  FRONTED_URL,
+  FRONTEND_URL,
   GUEST_USERNAME,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
@@ -24,17 +26,19 @@ const {
 server.use(
   cors({
     origin: (origin, cb) => {
-      if (NODE_ENV === "development" || origin === FRONTED_URL) {
+      if (origin === FRONTEND_URL || NODE_ENV === "development") {
         cb(null, true);
         return;
       }
 
       cb(new Error("Not allowed by CORS"));
     },
+    credentials: true,
   })
 );
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(cookieParser());
 
 passport.use(
   new GithubStrategy(
@@ -79,18 +83,16 @@ passport.use(
 server.use("/auth", routes.auth);
 server.use(async (req, res, next) => {
   try {
-    const { authorization } = req.headers;
-    if (!authorization) return void res.sendStatus(401);
-
-    const token = authorization.split(" ")[1];
-    const payload = jwt.verify(token, JWT_SECRET!) as { id: number };
-    const user = await prisma.user.findUnique({ where: { id: payload.id } });
+    const token: string | undefined = req.cookies[COOKIE_NAME!];
+    if (!token) return void res.sendStatus(401);
+    const decoded = jwt.verify(token, JWT_SECRET!) as { id: number };
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
     req.user = user || undefined;
 
     next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      return void res.redirect(`${BACKEND_URL}/auth/github`);
+      return void res.redirect(`${FRONTEND_URL}/login`);
     }
 
     next(error);
