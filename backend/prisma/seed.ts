@@ -17,11 +17,17 @@ async function seedDatabase() {
         data: [
           {
             username: GUEST_USERNAME!,
-            avatarUrl: `https://api.dicebear.com/9.x/${"fun-emoji"}/svg?seed=${GUEST_USERNAME!}&size=${200}&radius=50`,
+            avatarUrl: `https://api.dicebear.com/9.x/${"fun-emoji"}/svg?seed=${GUEST_USERNAME!
+              .split("")
+              .map((char) => char.charCodeAt(0))
+              .join("")}&size=${200}&radius=50`,
           },
           {
             username: SECOND_USERNAME,
-            avatarUrl: `https://api.dicebear.com/9.x/${"fun-emoji"}/svg?seed=${SECOND_USERNAME}&size=${200}&radius=50`,
+            avatarUrl: `https://api.dicebear.com/9.x/${"fun-emoji"}/svg?seed=${SECOND_USERNAME
+              .split("")
+              .map((char) => char.charCodeAt(0))
+              .join("")}&size=${200}&radius=50`,
           },
         ],
       }),
