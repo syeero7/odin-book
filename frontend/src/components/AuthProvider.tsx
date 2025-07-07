@@ -22,7 +22,7 @@ export const useAuth = (): AuthCtx => {
 };
 
 function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthCtx["user"]>(null);
+  const [user, setUser] = useState<AuthCtx["user"]>(storage.getItem);
   const navigate = useNavigate();
 
   const logout = async () => {

@@ -16,7 +16,7 @@ function Login() {
       (async () => {
         const res = await getCurrentUser();
         if (!res.ok) throw res;
-        const user: AuthUser = await res.json();
+        const { user }: { user: AuthUser } = await res.json();
         login(user);
       })();
     }
