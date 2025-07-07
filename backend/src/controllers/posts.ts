@@ -7,7 +7,8 @@ import prisma from "../lib/prisma-client";
 import upload from "../lib/multer";
 import { uploadFile, deleteFile } from "../lib/cloudinary";
 
-export const getAllPosts = asyncHandler(async (_req, res) => {
+export const getAllPosts = asyncHandler(async (req, res) => {
+  const userId = (req.user as User).id;
   const posts = await prisma.post.findMany({
     orderBy: {
       createdAt: "desc",
@@ -25,6 +26,7 @@ export const getAllPosts = asyncHandler(async (_req, res) => {
           comments: true,
         },
       },
+      likes: { where: { userId } },
     },
   });
 
@@ -43,6 +45,7 @@ export const getPostById = [
     const result = validationResult(req);
     if (!result.isEmpty()) return void res.sendStatus(404);
 
+    const userId = (req.user as User).id;
     const { postId } = req.params;
     const post = await prisma.post.findUnique({
       where: { id: postId },
@@ -68,7 +71,11 @@ export const getPostById = [
               },
             },
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
+        likes: { where: { userId } },
       },
     });
 
@@ -87,9 +94,11 @@ export const getUserPosts = [
       return void res.sendStatus(errors["userId"] ? 404 : 400);
     }
 
+    const currentUserId = (req.user as User).id;
     const { userId } = req.params;
     if (req.query.liked) {
       const posts = await prisma.post.findMany({
+        orderBy: { createdAt: "desc" },
         where: {
           likes: {
             some: {
@@ -110,6 +119,11 @@ export const getUserPosts = [
               comments: true,
             },
           },
+          likes: {
+            where: {
+              userId: currentUserId,
+            },
+          },
         },
       });
 
@@ -117,6 +131,7 @@ export const getUserPosts = [
     }
 
     const posts = await prisma.post.findMany({
+      orderBy: { createdAt: "desc" },
       where: { authorId: userId },
       include: {
         author: {
@@ -129,6 +144,11 @@ export const getUserPosts = [
           select: {
             likes: true,
             comments: true,
+          },
+        },
+        likes: {
+          where: {
+            userId: currentUserId,
           },
         },
       },
