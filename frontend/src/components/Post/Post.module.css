@@ -1,0 +1,136 @@
+.container {
+  max-width: 60ch;
+  display: grid;
+  gap: 0.5em;
+
+  :any-link {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.content {
+  padding: 0.25em;
+  transition: background-color 0.25s ease-in-out;
+  border-radius: 6px;
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    background-color: hsla(from var(--primary) h s l / 0.1);
+  }
+
+  strong {
+    font-size: 1.1em;
+  }
+
+  p {
+    font-size: 0.96em;
+    margin-top: 0.4em;
+    display: -webkit-box;
+    line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.buttons {
+  display: flex;
+
+  button {
+    background-color: transparent;
+
+    svg {
+      fill: transparent;
+      transition: fill 0.25s ease-in-out;
+    }
+
+    &:not(.liked) {
+      &:hover,
+      &:focus-visible,
+      &:active {
+        svg {
+          fill: hsla(from var(--primary) h s l / 0.7);
+        }
+      }
+    }
+  }
+
+  a {
+    margin-left: 1.2em;
+  }
+
+  & > * > span {
+    font-size: 0.9em;
+  }
+}
+
+button.liked svg {
+  fill: var(--primary);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
+
+  img {
+    border-radius: 50%;
+  }
+
+  strong {
+    font-size: 1.25em;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  time {
+    position: absolute;
+    transform: translateY(calc(100% + 1.5em));
+    font-size: 0.8em;
+    font-style: oblique;
+    margin-left: 0.5em;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    transform: scale(0.9);
+
+    svg {
+      transition: color 0.25s ease-in-out;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      svg {
+        color: var(--accent);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}

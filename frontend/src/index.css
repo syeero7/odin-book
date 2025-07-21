@@ -1,6 +1,6 @@
 :root {
   --text: hsl(244, 55%, 6%);
-  --background: hsl(240, 47%, 97%);
+  --background: hsl(0, 0%, 99%);
   --primary: hsl(240, 6%, 10%);
   --secondary: hsl(240, 5%, 34%);
   --accent: hsl(0, 84%, 60%);
@@ -23,6 +23,9 @@ body {
   color-scheme: light dark;
   display: flex;
   place-content: center;
+  font-family: system-ui, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
 }
 
 button {
@@ -39,4 +42,8 @@ button {
   width: 32px;
   height: 32px;
   color: var(--primary);
+}
+
+li {
+  list-style: none;
 }

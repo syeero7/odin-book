@@ -10,3 +10,27 @@ export function logout() {
 export function getCurrentUser() {
   return fetch(`${VITE_BACKEND_URL}/users/me`, { credentials: "include" });
 }
+
+export function getAllPosts() {
+  return fetch(`${VITE_BACKEND_URL}/posts`, { credentials: "include" });
+}
+
+export function deletePost(postId: string | number) {
+  return fetch(`${VITE_BACKEND_URL}/posts/${postId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+}
+
+export function likePost(postId: string | number, like: string) {
+  return fetch(`${VITE_BACKEND_URL}/posts/${postId}?like=${like}`, {
+    method: "PUT",
+    credentials: "include",
+  });
+}
+
+export function getPostById(postId: string | number) {
+  return fetch(`${VITE_BACKEND_URL}/posts/${postId}`, {
+    credentials: "include",
+  });
+}
