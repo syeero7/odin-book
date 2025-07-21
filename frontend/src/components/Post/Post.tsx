@@ -1,14 +1,9 @@
-import {
-  Form,
-  Link,
-  redirect,
-  useFetcher,
-  useLocation,
-  type ActionFunction,
-} from "react-router-dom";
+import { Link, redirect, type ActionFunction } from "react-router-dom";
 import { formatDistance } from "date-fns";
-import { Heart, MessageCircle, Trash } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
+import LikeButton from "@/components/LikeButton";
+import DeleteButton from "@/components/DeleteButton";
 import { useAuth } from "@/components/AuthProvider";
 import type { Post as PostProps } from "@/types";
 import { deletePost, likePost } from "@/lib/api";
@@ -25,7 +20,6 @@ function Post({
   _count,
   likes,
 }: PostProps) {
-  const location = useLocation();
   const { user } = useAuth();
 
   return (
@@ -42,8 +36,8 @@ function Post({
 
         {user?.id === authorId && (
           <DeleteButton
-            postId={id}
-            redirectTo={location.pathname}
+            itemId={id}
+            itemName="post"
             disabled={author.username === import.meta.env.VITE_GUEST_USERNAME}
           />
         )}
@@ -64,7 +58,7 @@ function Post({
           postId={id}
           count={_count.likes}
           liked={likes.length !== 0}
-          redirectTo={location.pathname}
+          className={styles.liked}
         />
 
         <Link to={`/posts/${id}`} viewTransition>
@@ -76,61 +70,15 @@ function Post({
   );
 }
 
-function LikeButton({ liked, count, postId }: LikeButtonProps) {
-  const fetcher = useFetcher();
-  const postLiked = fetcher.formData?.get("liked") || liked;
-
-  return (
-    <fetcher.Form method="post" action={`/posts/${postId}/like`}>
-      <button
-        name="like"
-        value={postLiked ? "false" : "true"}
-        aria-label={postLiked ? "unlike post" : "like post"}
-        title="like"
-        style={{ opacity: fetcher.state !== "idle" ? 0.5 : 1 }}
-        className={postLiked ? styles.liked : undefined}
-        disabled={fetcher.state !== "idle"}
-      >
-        <Heart />
-      </button>
-      <span>{count}</span>
-    </fetcher.Form>
-  );
-}
-
-function DeleteButton({ postId, redirectTo, disabled }: DeleteButtonProps) {
-  return (
-    <Form
-      method="delete"
-      action={`/posts/${postId}/delete`}
-      viewTransition
-      onSubmit={(e) => {
-        if (!confirm("Are you sure you want to delete this post?")) {
-          e.preventDefault();
-          return;
-        }
-      }}
-    >
-      <button aria-label="delete post" disabled={disabled}>
-        <Trash />
-      </button>
-      <input type="hidden" name="redirectTo" value={redirectTo} />
-    </Form>
-  );
-}
-
 export const action = (name: "like" | "delete"): ActionFunction => {
   switch (name) {
     case "like":
       return async ({ params, request }) => {
         const data = await request.formData();
-        const previousPath = (data.get("redirectTo") as string) || "/";
         const like = data.get("like") as string;
 
         const res = await likePost(params.postId!, like);
         if (!res.ok) throw res;
-
-        return redirect(previousPath);
       };
 
     case "delete":
@@ -144,19 +92,6 @@ export const action = (name: "like" | "delete"): ActionFunction => {
         return redirect(previousPath);
       };
   }
-};
-
-type LikeButtonProps = {
-  liked: boolean;
-  count: number;
-  postId: number;
-  redirectTo: string;
-};
-
-type DeleteButtonProps = {
-  postId: number;
-  redirectTo: string;
-  disabled: boolean;
 };
 
 export default Post;

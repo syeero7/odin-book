@@ -55,7 +55,8 @@
     &:not(.liked) {
       &:hover,
       &:focus-visible,
-      &:active {
+      &:active,
+      &:disabled {
         svg {
           fill: hsla(from var(--primary) h s l / 0.7);
         }
