@@ -153,7 +153,7 @@ export const followUser = [
     const user1 = (req.user as User).id;
     const { userId: user2 } = req.params;
 
-    if (req.query.follow) {
+    if (req.query.follow === "true") {
       await prisma.user.update({
         where: { id: user1 },
         data: {

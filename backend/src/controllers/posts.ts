@@ -96,7 +96,7 @@ export const getUserPosts = [
 
     const currentUserId = (req.user as User).id;
     const { userId } = req.params;
-    if (req.query.liked) {
+    if (req.query.liked === "true") {
       const posts = await prisma.post.findMany({
         orderBy: { createdAt: "desc" },
         where: {
@@ -300,12 +300,9 @@ export const likePost = [
     const { postId } = req.params;
     const userId = (req.user as User).id;
 
-    if (req.query.like) {
+    if (req.query.like === "true") {
       const like = await prisma.like.create({
-        data: {
-          userId: userId,
-          postId: postId,
-        },
+        data: { userId, postId },
         include: {
           post: {
             select: { authorId: true },
