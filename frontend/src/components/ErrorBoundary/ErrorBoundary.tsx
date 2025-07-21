@@ -5,6 +5,7 @@ import {
   type ErrorResponse,
 } from "react-router-dom";
 import styles from "./ErrorBoundary.module.css";
+import AuthProvider, { useAuth } from "../AuthProvider";
 
 type ErrorProps<T> = { error: T };
 
@@ -12,18 +13,27 @@ function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <article className={styles.container}>
-      {isRouteErrorResponse(error) ? (
-        <ErrorResponse error={error} />
-      ) : error instanceof Error ? (
-        <StackTrace error={error} />
-      ) : (
-        <h1>Unknown Error</h1>
-      )}
-    </article>
+    <AuthProvider>
+      <article className={styles.container}>
+        {isRouteErrorResponse(error) ? (
+          <ErrorResponse error={error} />
+        ) : error instanceof Error ? (
+          <StackTrace error={error} />
+        ) : (
+          <h1>Unknown Error</h1>
+        )}
+      </article>
+    </AuthProvider>
   );
 
   function ErrorResponse({ error }: ErrorProps<ErrorResponse>) {
+    const { logout } = useAuth();
+
+    if (error.status === 401) {
+      logout();
+      return;
+    }
+
     return (
       <div>
         <h1>Oops! Something went wrong.</h1>
