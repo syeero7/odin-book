@@ -12,7 +12,7 @@ type Author = {
   avatarUrl: string;
 };
 
-type Comment = {
+export type Comment = {
   id: number;
   content: string;
   userId: number;

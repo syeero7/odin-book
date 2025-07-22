@@ -4,6 +4,7 @@ import Fallback from "@/components/Fallback";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import RouteController from "@/components/RouteController";
 import { action as getPostActions } from "@/components/Post";
+import { action as getCommentActions } from "@/components/Comment";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export default createBrowserRouter([
@@ -43,12 +44,30 @@ export default createBrowserRouter([
             },
           },
           {
+            path: "posts/:postId",
+            lazy: async () => {
+              const module = await import("@/pages/SelectedPost");
+              return {
+                Component: module.default,
+                loader: module.loader,
+              };
+            },
+          },
+          {
             path: "posts/:postId/delete",
             action: getPostActions("delete"),
           },
           {
             path: "posts/:postId/like",
             action: getPostActions("like"),
+          },
+          {
+            path: "posts/:postId/comment",
+            action: getCommentActions("create"),
+          },
+          {
+            path: "comments/:commentId/delete",
+            action: getCommentActions("delete"),
           },
         ],
       },

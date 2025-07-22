@@ -1,0 +1,136 @@
+.container {
+  min-height: calc(100vh - 72px);
+  padding: 0.6em;
+
+  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
+  border-inline: var(--border);
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.post {
+  display: grid;
+  max-width: 60ch;
+  gap: 0.5em;
+
+  h1 {
+    margin-top: 1.5em;
+  }
+
+  h1,
+  p,
+  img + header {
+    padding-inline: 0.25em;
+  }
+}
+
+.comments {
+  max-width: 60ch;
+
+  hr {
+    margin-inline: -0.6em;
+  }
+
+  ul {
+    margin-top: 0.5em;
+
+    li {
+      border-bottom: var(--border);
+    }
+  }
+
+  > form {
+    margin-block: 0.6em;
+    display: grid;
+    gap: 0.5em;
+
+    textarea {
+      resize: none;
+      height: 76px;
+      background-color: var(--background);
+      border: var(--border);
+      padding: 0.5em;
+      color: var(--text);
+      font-family: inherit;
+      border-radius: 8px;
+      font-size: 0.9em;
+    }
+
+    button {
+      max-width: fit-content;
+      margin-left: auto;
+      font-size: 0.85em;
+      padding: 0.4em 0.8em;
+      border-color: var(--primary);
+      background-color: transparent;
+      color: var(--text);
+      transition-property: background-color, border-color, color;
+      transition-duration: 0.25s;
+      transition-timing-function: ease-in-out;
+
+      &:hover,
+      &:active,
+      &:focus-visible {
+        background-color: var(--primary);
+        border-color: transparent;
+        color: var(--background);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  margin-bottom: 0.5em;
+
+  button {
+    background-color: transparent;
+
+    svg {
+      fill: transparent;
+      transition: fill 0.25s ease-in-out;
+    }
+
+    &:not(.liked) {
+      &:hover,
+      &:focus-visible,
+      &:active,
+      &:disabled {
+        svg {
+          fill: hsla(from var(--primary) h s l / 0.7);
+        }
+      }
+    }
+  }
+
+  > div {
+    margin-left: 1.2em;
+  }
+
+  & > * > span {
+    font-size: 0.9em;
+  }
+}
+
+button.liked svg {
+  fill: var(--primary);
+}
+
+.empty {
+  text-align: center;
+  margin: 1em;
+}
+
+@media (width < 575px) {
+  .container ul {
+    border-inline-color: transparent;
+  }
+}

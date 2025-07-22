@@ -34,3 +34,19 @@ export function getPostById(postId: string | number) {
     credentials: "include",
   });
 }
+
+export function createComment(postId: string | number, body: object) {
+  return fetch(`${VITE_BACKEND_URL}/posts/${postId}/comments`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "Content-type": "application/json" },
+    credentials: "include",
+  });
+}
+
+export function deleteComment(commentId: string | number) {
+  return fetch(`${VITE_BACKEND_URL}/posts/comments/${commentId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+}
