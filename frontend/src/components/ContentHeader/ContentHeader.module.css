@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
+
+  :any-link {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 50%;
+  }
+
+  strong {
+    font-size: 1.25em;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  time {
+    position: absolute;
+    transform: translateY(calc(100% + 1.5em));
+    font-size: 0.8em;
+    font-style: oblique;
+    margin-left: 0.5em;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    transform: scale(0.9);
+
+    svg {
+      transition: color 0.25s ease-in-out;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      svg {
+        color: var(--accent);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}

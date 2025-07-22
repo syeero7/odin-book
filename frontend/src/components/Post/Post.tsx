@@ -1,10 +1,8 @@
 import { Link, redirect, type ActionFunction } from "react-router-dom";
-import { formatDistance } from "date-fns";
 import { MessageCircle } from "lucide-react";
-
 import LikeButton from "@/components/LikeButton";
-import DeleteButton from "@/components/DeleteButton";
 import { useAuth } from "@/components/AuthProvider";
+import ContentHeader from "@/components/ContentHeader";
 import type { Post as PostProps } from "@/types";
 import { deletePost, likePost } from "@/lib/api";
 import styles from "./Post.module.css";
@@ -24,29 +22,14 @@ function Post({
 
   return (
     <article className={styles.container}>
-      <div className={styles.top}>
-        <Link to={`/users/${authorId}`} viewTransition>
-          <img src={author.avatarUrl} alt="" width={45} height={45} />
-          <strong>
-            {author.username.startsWith("#")
-              ? author.username.slice(1)
-              : author.username}
-          </strong>
-        </Link>
-
-        {user?.id === authorId && (
-          <DeleteButton
-            itemId={id}
-            itemName="post"
-            disabled={author.username === import.meta.env.VITE_GUEST_USERNAME}
-          />
-        )}
-
-        <time dateTime={new Date(createdAt).toISOString()}>
-          {formatDistance(new Date(createdAt), new Date(), { addSuffix: true })}
-        </time>
-      </div>
-
+      <ContentHeader
+        id={id}
+        author={author}
+        authorId={authorId}
+        userId={user!.id}
+        createdAt={createdAt}
+        contentName="post"
+      />
       <Link to={`/posts/${id}`} viewTransition className={styles.content}>
         <strong>{title}</strong>
         {content && <p>{content}</p>}
