@@ -15,7 +15,7 @@ function ContentHeader({
   return (
     <div className={styles.container}>
       <Link to={`/users/${authorId}`} viewTransition>
-        <img src={author.avatarUrl} alt="" width={45} height={45} />
+        <img src={author.avatarUrl} alt="" width={36} height={36} />
         <strong>
           {author.username.startsWith("#")
             ? author.username.slice(1)
