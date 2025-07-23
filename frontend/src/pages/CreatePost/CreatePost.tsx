@@ -66,8 +66,18 @@ const useFormController = () => {
 
   const formAction: FormAction = async (formData) => {
     const queries: CreatePostQueries = [];
-    if (formData.has("image")) queries.push("image=true");
-    if (formData.has("content")) queries.push("text=true");
+
+    if ((formData.get("image") as File)?.size) {
+      queries.push("image=true");
+    } else {
+      formData.delete("image");
+    }
+
+    if ((formData.get("content") as string)?.length) {
+      queries.push("text=true");
+    } else {
+      formData.delete("content");
+    }
 
     const res = await createPost(formData, queries);
     if (res.ok) return navigate("/", { viewTransition: true });
