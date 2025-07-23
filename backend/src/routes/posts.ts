@@ -6,7 +6,7 @@ const router = Router();
 router.get("/", controllers.getAllPosts);
 router.get("/:postId", controllers.getPostById);
 router.get("/users/:userId", controllers.getUserPosts); // ?liked=true
-router.post("/", controllers.createPost); // ?type=text ?type=image
+router.post("/", controllers.createPost); // ?text=true image=true
 router.post("/:postId/comments", controllers.createComment);
 router.put("/:postId", controllers.likePost); // ?like=true
 router.delete("/:postId", controllers.deletePost);

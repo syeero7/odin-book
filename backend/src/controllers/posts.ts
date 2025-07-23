@@ -1,8 +1,8 @@
-import { validationResult, body, param, query } from "express-validator";
+import { validationResult, body, param, query, oneOf } from "express-validator";
 import asyncHandler from "express-async-handler";
 import { imageSize } from "image-size";
 import { type Request } from "express";
-import { type User } from "@prisma/client";
+import type { User, Prisma } from "@prisma/client";
 import prisma from "../lib/prisma-client";
 import upload from "../lib/multer";
 import { uploadFile, deleteFile } from "../lib/cloudinary";
@@ -165,74 +165,66 @@ export const createPost = [
   body("content")
     .isLength({ min: 1, max: 1000 })
     .withMessage("Comment must be within 1000 characters"),
-  query("type").custom((value) => value === "text" || value === "image"),
+  query("text").optional().toBoolean().isBoolean(),
+  query("image").optional().toBoolean().isBoolean(),
+  oneOf([query("text").exists(), query("image").exists()]),
   upload.single("image"),
   asyncHandler<UserPostParams>(async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
       const errors = result.formatWith(({ msg }) => msg).mapped();
-      if (errors["type"]) return void res.sendStatus(400);
+      if (errors["text"] || errors["image"]) return void res.sendStatus(400);
       return void res.status(400).json({ errors });
     }
 
     const userId = (req.user as User).id;
-    const { postId } = req.params;
+    const { text, image } = req.query;
     const { title, content } = req.body;
 
-    if (req.query.type === "text") {
-      await prisma.post.create({
-        data: {
-          title,
-          content,
-          author: {
-            connect: { id: userId },
-          },
-        },
-      });
-
-      return void res.sendStatus(201);
-    }
-
-    if (!req.file) return void res.status(400).json({ message: "No file" });
-    const imageTypes = ["image/jpg", "image/jpeg", "image/png"];
-    const fileSize = 5; // 5MB
-    const imgSize = 1200; // 1200px
-
-    const { mimetype, size, buffer } = req.file!;
-
-    if (!imageTypes.includes(mimetype)) {
-      return void res
-        .status(400)
-        .json({ message: "File format must be either JPEG or PNG" });
-    }
-
-    if (size / (1024 * 1024) > fileSize) {
-      return void res.status(400).json({
-        message: `File size exceeds the maximum limit of ${fileSize}MB`,
-      });
-    }
-
-    const { height, width } = imageSize(buffer);
-    if (height > imgSize || width > imgSize) {
-      return void res
-        .status(400)
-        .json({ message: `Image must be less than ${imgSize} x ${imgSize}` });
-    }
-
-    const url = await uploadFile(req.file, `posts/${postId}`);
-    await prisma.post.create({
-      data: {
-        title,
-        content,
-        imageUrl: url,
-        author: {
-          connect: {
-            id: userId,
-          },
+    const data: Prisma.PostCreateInput = {
+      title,
+      author: {
+        connect: {
+          id: userId,
         },
       },
-    });
+    };
 
+    if (text === "true") data.content = content;
+    if (image === "true") {
+      if (!req.file) return void res.status(400).json({ message: "No file" });
+      const imageTypes = ["image/jpg", "image/jpeg", "image/png"];
+      const fileSize = 5; // 5MB
+      const imgSize = 1200; // 1200px
+
+      const { mimetype, size, buffer } = req.file!;
+
+      if (!imageTypes.includes(mimetype)) {
+        return void res
+          .status(400)
+          .json({ message: "File format must be either JPEG or PNG" });
+      }
+
+      if (size / (1024 * 1024) > fileSize) {
+        return void res.status(400).json({
+          message: `File size exceeds the maximum limit of ${fileSize}MB`,
+        });
+      }
+
+      const { height, width } = imageSize(buffer);
+      if (height > imgSize || width > imgSize) {
+        return void res
+          .status(400)
+          .json({ message: `Image must be less than ${imgSize} x ${imgSize}` });
+      }
+
+      const uniqueSuffix = `${userId}-${Date.now().toString(36)}`;
+      const url = await uploadFile(req.file, `posts/${uniqueSuffix}`);
+
+      data.imageUrl = url;
+    }
+
+    await prisma.post.create({ data });
     res.sendStatus(201);
   }),
 ];
