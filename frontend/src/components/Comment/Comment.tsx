@@ -28,14 +28,14 @@ export const action = (name: "create" | "delete"): ActionFunction => {
   switch (name) {
     case "create":
       return async ({ request, params }) => {
+        const { postId } = params;
         const data = await request.formData();
         const content = data.get("content") as string;
-        const redirectTo = data.get("redirectTo") as string;
 
-        const res = await createComment(params.postId!, { content });
+        const res = await createComment(postId!, { content });
         if (!res.ok) throw res;
 
-        return redirect(redirectTo);
+        return redirect(`/posts/${postId!}`);
       };
 
     case "delete":
