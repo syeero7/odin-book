@@ -38,3 +38,5 @@ export type Post = {
     comments: number;
   };
 };
+
+export type CreatePostQueries = Array<"text=true" | "image=true">;

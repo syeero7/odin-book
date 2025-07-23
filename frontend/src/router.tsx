@@ -54,6 +54,15 @@ export default createBrowserRouter([
             },
           },
           {
+            path: "posts/new",
+            lazy: async () => {
+              const module = await import("@/pages/CreatePost");
+              return {
+                Component: module.default,
+              };
+            },
+          },
+          {
             path: "posts/:postId/delete",
             action: getPostActions("delete"),
           },

@@ -1,3 +1,5 @@
+import type { CreatePostQueries } from "@/types";
+
 const { VITE_BACKEND_URL } = import.meta.env;
 
 export function logout() {
@@ -31,6 +33,15 @@ export function likePost(postId: string | number, like: string) {
 
 export function getPostById(postId: string | number) {
   return fetch(`${VITE_BACKEND_URL}/posts/${postId}`, {
+    credentials: "include",
+  });
+}
+
+export function createPost(formData: FormData, queries: CreatePostQueries) {
+  const queriesStr = queries.length ? `?${queries.join("&")}` : "";
+  return fetch(`${VITE_BACKEND_URL}/posts${queriesStr}`, {
+    method: "POST",
+    body: formData,
     credentials: "include",
   });
 }
