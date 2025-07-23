@@ -130,7 +130,7 @@ button.liked svg {
 }
 
 @media (width < 575px) {
-  .container ul {
+  .container {
     border-inline-color: transparent;
   }
 }
