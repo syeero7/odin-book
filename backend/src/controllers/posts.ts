@@ -159,16 +159,18 @@ export const getUserPosts = [
 ];
 
 export const createPost = [
+  upload.single("image"),
   body("title")
+    .trim()
     .isLength({ min: 1, max: 80 })
-    .withMessage("Comment must be within 80 characters"),
+    .withMessage("Post must be within 80 characters"),
   body("content")
+    .trim()
     .isLength({ min: 1, max: 1000 })
-    .withMessage("Comment must be within 1000 characters"),
+    .withMessage("Post must be within 1000 characters"),
   query("text").optional().toBoolean().isBoolean(),
   query("image").optional().toBoolean().isBoolean(),
   oneOf([query("text").exists(), query("image").exists()]),
-  upload.single("image"),
   asyncHandler<UserPostParams>(async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -232,6 +234,7 @@ export const createPost = [
 export const createComment = [
   param("postId").toInt().isNumeric(),
   body("content")
+    .trim()
     .isLength({ min: 1, max: 300 })
     .withMessage("Comment must be within 300 characters"),
   asyncHandler<UserPostParams>(async (req, res) => {
