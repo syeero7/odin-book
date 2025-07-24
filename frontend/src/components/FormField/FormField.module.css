@@ -28,6 +28,13 @@
     border: var(--border);
     color: var(--text);
     padding: 0.3em;
+
+    --invalid-border: 1.5px solid var(--accent);
+
+    &:invalid {
+      border: var(--invalid-border);
+      outline: var(--invalid-border);
+    }
   }
 }
 
