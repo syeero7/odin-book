@@ -74,3 +74,9 @@ export function followUser(userId: string | number, query: string) {
     credentials: "include",
   });
 }
+
+export function getNotifications() {
+  return fetch(`${VITE_BACKEND_URL}/notifications`, {
+    credentials: "include",
+  });
+}

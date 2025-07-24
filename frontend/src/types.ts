@@ -50,3 +50,16 @@ export type User = {
   updatedAt: Date;
   followers: { username: string }[] | [];
 };
+
+export type Notification = {
+  id: number;
+  type: "FOLLOW" | "LIKE" | "COMMENT";
+  postId: number | null;
+  senderId: number;
+  recipientId: number;
+  createdAt: Date;
+  sender: {
+    username: string;
+    avatarUrl: string;
+  };
+};

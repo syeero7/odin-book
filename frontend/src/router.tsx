@@ -93,6 +93,16 @@ export default createBrowserRouter([
             path: "/users/:userId/follow",
             action: followUserAction,
           },
+          {
+            path: "/notifications",
+            lazy: async () => {
+              const module = await import("@/pages/Notifications");
+              return {
+                Component: module.default,
+                loader: module.loader,
+              };
+            },
+          },
         ],
       },
     ],
