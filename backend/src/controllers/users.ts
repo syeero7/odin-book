@@ -22,14 +22,37 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
 
 export const getUserByUsername = asyncHandler(async (req, res) => {
   const userId = (req.user as User).id;
-  const query = req.query.q || "";
+  const query = (req.query.q || "") as string;
   const users = await prisma.user.findMany({
     where: {
-      username: {
-        startsWith: query as string,
-      },
       NOT: { id: userId },
+      OR: [
+        {
+          username: {
+            startsWith: `#${query}`,
+            mode: "insensitive",
+          },
+        },
+        {
+          username: {
+            startsWith: query,
+            mode: "insensitive",
+          },
+        },
+      ],
     },
+    include: {
+      followers: {
+        where: {
+          id: userId,
+        },
+        select: {
+          username: true,
+        },
+      },
+    },
+    take: 10,
+    orderBy: { createdAt: "desc" },
   });
 
   res.json({ users });
