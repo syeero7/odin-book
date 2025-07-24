@@ -61,3 +61,16 @@ export function deleteComment(commentId: string | number) {
     credentials: "include",
   });
 }
+
+export function searchUsers(query: string) {
+  return fetch(`${VITE_BACKEND_URL}/users/search?q=${query}`, {
+    credentials: "include",
+  });
+}
+
+export function followUser(userId: string | number, query: string) {
+  return fetch(`${VITE_BACKEND_URL}/users/${userId}?follow=${query}`, {
+    method: "PUT",
+    credentials: "include",
+  });
+}

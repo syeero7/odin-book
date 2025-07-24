@@ -5,6 +5,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import RouteController from "@/components/RouteController";
 import { action as getPostActions } from "@/components/Post";
 import { action as getCommentActions } from "@/components/Comment";
+import { action as followUserAction } from "@/components/FollowButton";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export default createBrowserRouter([
@@ -77,6 +78,20 @@ export default createBrowserRouter([
           {
             path: "comments/:commentId/delete",
             action: getCommentActions("delete"),
+          },
+          {
+            path: "/search",
+            lazy: async () => {
+              const module = await import("@/pages/Search");
+              return {
+                Component: module.default,
+                loader: module.loader,
+              };
+            },
+          },
+          {
+            path: "/users/:userId/follow",
+            action: followUserAction,
           },
         ],
       },

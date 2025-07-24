@@ -40,3 +40,13 @@ export type Post = {
 };
 
 export type CreatePostQueries = Array<"text=true" | "image=true">;
+
+export type User = {
+  id: number;
+  githubId: null | string;
+  username: string;
+  avatarUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+  followers: { username: string }[] | [];
+};

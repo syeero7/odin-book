@@ -1,0 +1,26 @@
+.container button {
+  max-width: 6em;
+  min-width: 90px;
+  margin-left: auto;
+  font-size: 0.8em;
+  padding: 0.4em 1em;
+  border-color: var(--primary);
+  background-color: transparent;
+  color: var(--text);
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in-out;
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    background-color: var(--primary);
+    border-color: transparent;
+    color: var(--background);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}

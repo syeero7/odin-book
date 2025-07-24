@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  padding: 0.6em 1em;
+
+  :any-link {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 50%;
+  }
+
+  strong {
+    font-size: 1em;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}
