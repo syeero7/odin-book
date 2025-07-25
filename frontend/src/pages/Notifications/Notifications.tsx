@@ -16,7 +16,7 @@ function Notifications() {
       ) : (
         <ul>
           {notifications.map((notification) => (
-            <li>
+            <li key={notification.id}>
               <NotificationLink {...notification} />
             </li>
           ))}
