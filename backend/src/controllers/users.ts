@@ -102,11 +102,28 @@ export const getUserConnections = [
     const result = validationResult(req);
     if (!result.isEmpty()) return void res.sendStatus(404);
 
-    const { userId } = req.params;
+    const user1 = (req.user as User).id;
+    const { userId: user2 } = req.params;
     const query = req.query.q as "following" | "followers";
     const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { [query]: true },
+      where: { id: user2 },
+      select: {
+        [query]: {
+          include: {
+            followers: {
+              where: {
+                id: user1,
+              },
+              select: {
+                username: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
     });
 
     if (!user) return void res.sendStatus(404);
