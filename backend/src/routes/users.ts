@@ -6,8 +6,7 @@ const router = Router();
 router.get("/me", controllers.getCurrentUser);
 router.get("/search", controllers.getUserByUsername);
 router.get("/:userId/profile", controllers.getUserProfile);
-router.get("/:userId/followers", controllers.getUserFollowers);
-router.get("/:userId/following", controllers.getUserFollowing);
+router.get("/:userId/connections", controllers.getUserConnections); //q=followers || q=following
 router.put("/avatar", controllers.updateUserAvatar);
 router.put("/:userId", controllers.followUser); // follow=true
 

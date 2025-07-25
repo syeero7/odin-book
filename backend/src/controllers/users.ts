@@ -95,37 +95,22 @@ export const getUserProfile = [
   }),
 ];
 
-export const getUserFollowers = [
+export const getUserConnections = [
   param("userId").toInt().isNumeric(),
+  query("q").custom((value) => value === "followers" || value === "following"),
   asyncHandler<UserParams>(async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) return void res.sendStatus(404);
 
     const { userId } = req.params;
+    const query = req.query.q as "following" | "followers";
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { followers: true },
+      select: { [query]: true },
     });
 
     if (!user) return void res.sendStatus(404);
-    res.json({ followers: user.followers });
-  }),
-];
-
-export const getUserFollowing = [
-  param("userId").toInt().isNumeric(),
-  asyncHandler<UserParams>(async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) return void res.sendStatus(404);
-
-    const { userId } = req.params;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { following: true },
-    });
-
-    if (!user) return void res.sendStatus(404);
-    res.json({ following: user.following });
+    res.json({ users: user[query] });
   }),
 ];
 
