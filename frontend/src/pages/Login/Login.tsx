@@ -8,10 +8,10 @@ import logo from "@/assets/logo.webp";
 
 function Login() {
   const location = useLocation();
-  const { login } = useAuth();
+  const { user, login, logout } = useAuth();
+  const queries = new URLSearchParams(location.search);
 
   useEffect(() => {
-    const queries = new URLSearchParams(location.search);
     if (queries.get("success") === "true") {
       (async () => {
         const res = await getCurrentUser();
@@ -23,6 +23,14 @@ function Login() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
+
+  useEffect(() => {
+    const loginRedirect =
+      queries.get("success") === "true" || !!queries.get("success");
+    if (user && !loginRedirect) logout();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleClick = (method: "github" | "guest") => {
     return () => {

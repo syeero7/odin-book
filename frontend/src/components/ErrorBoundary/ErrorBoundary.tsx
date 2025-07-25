@@ -5,34 +5,24 @@ import {
   type ErrorResponse,
 } from "react-router-dom";
 import styles from "./ErrorBoundary.module.css";
-import AuthProvider, { useAuth } from "../AuthProvider";
-
-type ErrorProps<T> = { error: T };
 
 function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <AuthProvider>
-      <article className={styles.container}>
-        {isRouteErrorResponse(error) ? (
-          <ErrorResponse error={error} />
-        ) : error instanceof Error ? (
-          <StackTrace error={error} />
-        ) : (
-          <h1>Unknown Error</h1>
-        )}
-      </article>
-    </AuthProvider>
+    <article className={styles.container}>
+      {isRouteErrorResponse(error) ? (
+        <ErrorResponse error={error} />
+      ) : error instanceof Error ? (
+        <StackTrace error={error} />
+      ) : (
+        <h1>Unknown Error</h1>
+      )}
+    </article>
   );
 
   function ErrorResponse({ error }: ErrorProps<ErrorResponse>) {
-    const { logout } = useAuth();
-
-    if (error.status === 401) {
-      logout();
-      return;
-    }
+    const unauthorized = error.status === 401;
 
     return (
       <div>
@@ -43,9 +33,9 @@ function ErrorBoundary() {
             {error.status} {error.statusText}
           </p>
           <p>
-            Go to{" "}
-            <Link viewTransition to="/">
-              Homepage
+            {unauthorized && "Go to "}
+            <Link viewTransition to={unauthorized ? "/login" : "/"}>
+              {unauthorized ? "Login" : "Homepage"}
             </Link>
           </p>
         </article>
@@ -64,5 +54,7 @@ function StackTrace({ error }: ErrorProps<Error>) {
     </div>
   );
 }
+
+type ErrorProps<T> = { error: T };
 
 export default ErrorBoundary;
