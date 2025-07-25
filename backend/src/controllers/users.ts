@@ -66,10 +66,19 @@ export const getUserProfile = [
     const result = validationResult(req);
     if (!result.isEmpty()) return void res.sendStatus(404);
 
-    const { userId } = req.params;
+    const user1 = (req.user as User).id;
+    const { userId: user2 } = req.params;
     const profile = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: user2 },
       include: {
+        followers: {
+          where: {
+            id: user1,
+          },
+          select: {
+            username: true,
+          },
+        },
         _count: {
           select: {
             followers: true,
