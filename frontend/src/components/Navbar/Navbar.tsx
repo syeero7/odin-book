@@ -43,7 +43,10 @@ function Navbar() {
         </li>
 
         <li>
-          <NavLink to={`/users/${user.id}`} viewTransition title="profile">
+          <NavLink
+            to={`/users/${user.id}/profile`}
+            viewTransition
+            title="profile">
             <CircleUser />
           </NavLink>
         </li>

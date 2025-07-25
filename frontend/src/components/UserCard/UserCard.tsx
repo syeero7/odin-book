@@ -6,7 +6,7 @@ import styles from "./UserCard.module.css";
 function UserCard({ id, username, followers, avatarUrl }: UserProps) {
   return (
     <article className={styles.container}>
-      <Link to={`/users/${id}`} viewTransition>
+      <Link to={`/users/${id}/profile`} viewTransition>
         <img src={avatarUrl} alt="" width={36} height={36} />
         <strong>
           {username.startsWith("#") ? username.slice(1) : username}

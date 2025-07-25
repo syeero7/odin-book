@@ -14,7 +14,7 @@ function ContentHeader({
 }: ContentHeaderProps) {
   return (
     <div className={styles.container}>
-      <Link to={`/users/${authorId}`} viewTransition>
+      <Link to={`/users/${authorId}/profile`} viewTransition>
         <img src={author.avatarUrl} alt="" width={36} height={36} />
         <strong>
           {author.username.startsWith("#")
