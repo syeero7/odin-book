@@ -80,6 +80,16 @@ export default createBrowserRouter([
         },
       },
       {
+        path: "/users/:userId/profile",
+        lazy: async () => {
+          const module = await import("@/pages/Profile");
+          return {
+            Component: module.default,
+            loader: module.loader,
+          };
+        },
+      },
+      {
         path: "/users/:userId/follow",
         action: followUserAction,
       },

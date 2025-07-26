@@ -1,0 +1,118 @@
+.container {
+  min-height: calc(100vh - 72px);
+  padding: 0.6em;
+
+  min-width: min(100%, 60ch);
+  max-width: 60ch;
+
+  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
+  border-inline: var(--border);
+}
+
+.profile {
+  display: grid;
+  gap: 1em;
+
+  header {
+    display: grid;
+    justify-content: flex-start;
+    padding-left: 1em;
+    gap: 1.5em;
+
+    img {
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: 2em;
+      text-align: center;
+    }
+
+    h1 + form {
+      max-width: fit-content;
+      margin-inline: auto;
+      margin-top: 0.5em;
+    }
+  }
+}
+
+.content {
+  display: grid;
+  padding: 0.5em;
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  hr {
+    margin-top: 0.5em;
+  }
+}
+
+.posts,
+.users {
+  display: grid;
+
+  li {
+    border-bottom: var(--border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.posts {
+  li {
+    padding-block: 0.5em;
+  }
+}
+
+.links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4em;
+  padding: 0.5em 1em;
+
+  a:any-link {
+    color: var(--text);
+    font-weight: 500;
+  }
+}
+
+.empty {
+  text-align: center;
+  margin: 1em;
+}
+
+@media (width < 575px) {
+  .container {
+    border-inline-color: transparent;
+  }
+}
+
+@media (width > 450px) {
+  .profile header {
+    align-items: center;
+    grid-auto-flow: column;
+    min-height: 295px;
+
+    div:has(h1) {
+      position: relative;
+    }
+
+    h1 + form {
+      position: absolute;
+      margin-top: 0;
+      transform: translate(25%, 0.5em);
+      left: 0;
+    }
+  }
+
+  .links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+}

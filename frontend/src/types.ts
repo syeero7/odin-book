@@ -63,3 +63,12 @@ export type Notification = {
     avatarUrl: string;
   };
 };
+
+export type Profile = User & {
+  _count: {
+    followers: number;
+    following: number;
+    posts: number;
+    likes: number;
+  };
+};
