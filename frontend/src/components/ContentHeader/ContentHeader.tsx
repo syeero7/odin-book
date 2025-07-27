@@ -44,7 +44,7 @@ type ContentHeaderProps = Omit<
   Post,
   "title" | "_count" | "likes" | "updatedAt"
 > & {
-  userId: number;
+  userId?: number;
   contentName: "post" | "comment";
 };
 
