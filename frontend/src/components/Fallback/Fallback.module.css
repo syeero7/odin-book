@@ -1,15 +1,19 @@
 .container {
-  margin-top: -1em;
   background-color: #fff;
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   animation-duration: 4s;
+  position: absolute;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  inset: 0;
 }
 
 .loader {
-  width: 50px;
+  width: 75px;
   padding: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
