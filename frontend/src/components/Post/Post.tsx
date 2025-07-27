@@ -33,7 +33,7 @@ function Post({
       <Link to={`/posts/${id}`} viewTransition className={styles.content}>
         <strong>{title}</strong>
         {content && <p>{content}</p>}
-        {imageUrl && <img src={imageUrl} alt="" />}
+        {imageUrl && <img src={imageUrl} alt="" width={280} height={280} />}
       </Link>
 
       <div className={styles.buttons}>

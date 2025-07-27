@@ -1,20 +1,13 @@
-.container {
-  min-height: calc(100vh - 72px);
+.container ul {
+  display: grid;
+  gap: 0.25em;
 
-  ul {
-    --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
+  li {
+    padding-block: 0.6em;
+    border-bottom: var(--border);
 
-    display: grid;
-    gap: 0.25em;
-    border-inline: var(--border);
-
-    li {
-      padding: 0.6em;
-      border-bottom: var(--border);
-
-      &:last-child {
-        border-bottom: none;
-      }
+    &:last-child {
+      border-bottom: none;
     }
   }
 }
@@ -23,10 +16,4 @@
   text-align: center;
   font-size: 0.9em;
   font-style: oblique;
-}
-
-@media (width < 575px) {
-  .container ul {
-    border-inline-color: transparent;
-  }
 }

@@ -1,20 +1,11 @@
 .container {
-  min-height: calc(100vh - 72px);
-  min-width: calc(60ch + 1.2em);
-  padding: 0.6em;
-
-  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
-  border-inline: var(--border);
-
   > form,
   > ul {
-    min-width: 60ch;
     padding: 0.6em;
   }
 
   ul {
     display: grid;
-    gap: 0.25em;
 
     li {
       border-bottom: var(--border);
@@ -29,10 +20,4 @@
 .empty {
   text-align: center;
   margin: 1em;
-}
-
-@media (width < 575px) {
-  .container {
-    border-inline-color: transparent;
-  }
 }

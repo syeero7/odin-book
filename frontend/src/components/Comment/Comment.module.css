@@ -1,4 +1,5 @@
 .container p {
+  padding-inline: 0.6em;
   margin-block: 2em 1em;
   font-size: 0.95em;
 }

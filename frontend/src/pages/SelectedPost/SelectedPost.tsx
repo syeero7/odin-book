@@ -41,7 +41,7 @@ function SelectedPost() {
           <h1>{title}</h1>
         </header>
 
-        {imageUrl && <img src={imageUrl} alt="" />}
+        {imageUrl && <img src={imageUrl} alt="" width={280} height={280} />}
         {content && <p>{content}</p>}
 
         <div className={styles.buttons}>
@@ -86,8 +86,7 @@ function CreateCommentForm({ postId }: { postId: number }) {
         required
         name="content"
         maxLength={300}
-        placeholder="Add a comment..."
-      ></textarea>
+        placeholder="Add a comment..."></textarea>
       <SubmitButton>Comment</SubmitButton>
     </Form>
   );

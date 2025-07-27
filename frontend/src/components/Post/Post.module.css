@@ -1,5 +1,4 @@
 .container {
-  max-width: 60ch;
   display: grid;
   gap: 0.5em;
 
@@ -15,7 +14,7 @@
 }
 
 .content {
-  padding: 0.25em;
+  padding: 0.5em;
   transition: background-color 0.25s ease-in-out;
   border-radius: 6px;
 
@@ -38,6 +37,11 @@
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+  }
+
+  img {
+    display: block;
+    margin-inline: auto;
   }
 }
 

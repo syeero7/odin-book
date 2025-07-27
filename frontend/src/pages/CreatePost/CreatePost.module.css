@@ -1,117 +1,101 @@
-.container {
-  min-height: calc(100vh - 72px);
-  padding: 0.6em;
+.container form {
+  margin-top: 1em;
+  padding-inline: 0.75em;
+  display: grid;
+  gap: 0.5em;
+  grid-template-columns: repeat(2, 1fr);
 
-  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
-  border-inline: var(--border);
+  div:has(input),
+  div:has(textarea) {
+    grid-column: span 2;
+  }
 
-  form {
-    margin-top: 1em;
-    max-width: 60ch;
-    padding-inline: 0.75em;
-    min-width: min(60ch, 100vw);
-    display: grid;
-    gap: 0.5em;
-    grid-template-columns: repeat(2, 1fr);
+  div:has(input[type="file"]) {
+    --file-input-size: 42px;
 
-    div:has(input),
-    div:has(textarea) {
-      grid-column: span 2;
+    grid-area: 3/1;
+    isolation: isolate;
+    position: relative;
+    pointer-events: none;
+    cursor: pointer;
+    width: var(--file-input-size);
+    height: var(--file-input-size);
+    overflow: hidden;
+
+    &:has(input:focus-visible) {
+      border-color: var(--text);
+      outline: var(--text);
     }
 
-    div:has(input[type="file"]) {
-      --file-input-size: 42px;
+    .fileAttached + svg {
+      color: var(--primary);
+    }
 
-      grid-area: 3/1;
-      isolation: isolate;
-      position: relative;
-      pointer-events: none;
+    svg {
+      --svg-size: 32px;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: var(--svg-size);
+      height: var(--svg-size);
+      pointer-events: all;
       cursor: pointer;
+      z-index: -1;
+      color: hsla(from var(--primary) h s l / 0.5);
+      transition: color 0.25s;
+    }
+
+    input {
       width: var(--file-input-size);
       height: var(--file-input-size);
-      overflow: hidden;
+      opacity: 0;
 
-      &:has(input:focus-visible) {
-        border-color: var(--text);
-        outline: var(--text);
-      }
-
-      .fileAttached + svg {
-        color: var(--primary);
-      }
-
-      svg {
-        --svg-size: 32px;
-
+      &::file-selector-button {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: var(--svg-size);
-        height: var(--svg-size);
-        pointer-events: all;
-        cursor: pointer;
-        z-index: -1;
-        color: hsla(from var(--primary) h s l / 0.5);
-        transition: color 0.25s;
-      }
-
-      input {
+        top: 0;
+        left: 0;
         width: var(--file-input-size);
         height: var(--file-input-size);
-        opacity: 0;
-
-        &::file-selector-button {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: var(--file-input-size);
-          height: var(--file-input-size);
-          margin: 0;
-          pointer-events: all;
-          cursor: pointer;
-          z-index: 1;
-        }
+        margin: 0;
+        pointer-events: all;
+        cursor: pointer;
+        z-index: 1;
       }
-    }
-
-    button[type="submit"] {
-      grid-area: 3/2;
-      max-width: fit-content;
-      max-height: fit-content;
-      margin-left: auto;
-      font-size: 0.85em;
-      padding: 0.4em 0.8em;
-      border-color: var(--primary);
-      background-color: transparent;
-      color: var(--text);
-      transition-property: background-color, border-color, color;
-      transition-duration: 0.25s;
-      transition-timing-function: ease-in-out;
-      align-self: center;
-
-      &:hover,
-      &:active,
-      &:focus-visible {
-        background-color: var(--primary);
-        border-color: transparent;
-        color: var(--background);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        pointer-events: none;
-      }
-    }
-
-    & input[type="file"] {
-      border: none;
     }
   }
-}
 
-@media (width < 575px) {
-  .container {
-    border-inline-color: transparent;
+  button[type="submit"] {
+    grid-area: 3/2;
+    max-width: fit-content;
+    max-height: fit-content;
+    margin-left: auto;
+    font-size: 0.85em;
+    padding: 0.4em 0.8em;
+    border-color: var(--primary);
+    background-color: transparent;
+    color: var(--text);
+    transition-property: background-color, border-color, color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+    align-self: center;
+
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background-color: var(--primary);
+      border-color: transparent;
+      color: var(--background);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  & input[type="file"] {
+    border: none;
   }
 }

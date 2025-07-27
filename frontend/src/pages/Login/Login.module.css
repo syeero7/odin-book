@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  border-inline-color: transparent;
 
   img {
     margin-bottom: 1em;

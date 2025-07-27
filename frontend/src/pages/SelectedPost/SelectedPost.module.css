@@ -1,10 +1,4 @@
 .container {
-  min-height: calc(100vh - 72px);
-  padding: 0.6em;
-
-  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
-  border-inline: var(--border);
-
   svg {
     width: 25px;
     height: 25px;
@@ -13,7 +7,6 @@
 
 .post {
   display: grid;
-  max-width: 60ch;
   gap: 0.5em;
 
   h1 {
@@ -25,11 +18,14 @@
   img + header {
     padding-inline: 0.25em;
   }
+
+  header + img {
+    display: block;
+    margin-inline: auto;
+  }
 }
 
 .comments {
-  max-width: 60ch;
-
   hr {
     margin-inline: -0.6em;
   }
@@ -39,6 +35,10 @@
 
     li {
       border-bottom: var(--border);
+
+      &:last-child {
+        border-bottom: none;
+      }
     }
   }
 
@@ -127,10 +127,4 @@ button.liked svg {
 .empty {
   text-align: center;
   margin: 1em;
-}
-
-@media (width < 575px) {
-  .container {
-    border-inline-color: transparent;
-  }
 }
