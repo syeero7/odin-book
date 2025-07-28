@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import { type CookieOptions } from "express";
 import passport from "passport";
 import { User } from "@prisma/client";
 import jwt from "jsonwebtoken";
@@ -10,15 +9,7 @@ export const authenticate = passport.authenticate("github", {
   scope: ["user:email"],
 });
 
-const { COOKIE_NAME, JWT_SECRET, GUEST_USERNAME, FRONTEND_URL, NODE_ENV } =
-  process.env;
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: NODE_ENV === "production",
-  sameSite: NODE_ENV === "production" ? "none" : "lax",
-  maxAge: 24 * 60 * 60 * 1000, // 1 day
-};
+const { JWT_SECRET, GUEST_USERNAME, FRONTEND_URL } = process.env;
 
 export const login = [
   passport.authenticate("github", { session: false }),
@@ -27,8 +18,7 @@ export const login = [
       expiresIn: "1d",
     });
 
-    res.cookie(COOKIE_NAME!, token, cookieOptions);
-    res.redirect(`${FRONTEND_URL}/login?success=true`);
+    res.redirect(`${FRONTEND_URL}/login?token=${token}`);
   }),
 ];
 
@@ -39,11 +29,5 @@ export const guestLogin = asyncHandler(async (_req, res) => {
   if (!guest) throw new Error("Guest not found");
   const token = jwt.sign({ id: guest.id }, JWT_SECRET!, { expiresIn: "1d" });
 
-  res.cookie(COOKIE_NAME!, token, cookieOptions);
-  res.redirect(`${FRONTEND_URL}/login?success=true`);
-});
-
-export const logout = asyncHandler(async (_req, res) => {
-  res.cookie(COOKIE_NAME!, "", { ...cookieOptions, maxAge: 0 });
-  res.sendStatus(204);
+  res.redirect(`${FRONTEND_URL}/login?token=${token}`);
 });

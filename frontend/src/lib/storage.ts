@@ -1,9 +1,7 @@
-import { type AuthUser } from "@/types";
+const STORAGE: "localStorage" | "sessionStorage" = "sessionStorage";
+const STORAGE_KEY = "TOKEN";
 
-const STORAGE: "localStorage" | "sessionStorage" = "localStorage";
-const STORAGE_KEY = "USER";
-
-export const getItem = (): AuthUser | null => {
+export const getItem = (): { token: string } | null => {
   try {
     const user = window[STORAGE].getItem(STORAGE_KEY);
     return user ? JSON.parse(user) : null;
@@ -13,9 +11,9 @@ export const getItem = (): AuthUser | null => {
   }
 };
 
-export const setItem = (user: AuthUser) => {
+export const setItem = (token: { token: string }) => {
   try {
-    window[STORAGE].setItem(STORAGE_KEY, JSON.stringify(user));
+    window[STORAGE].setItem(STORAGE_KEY, JSON.stringify(token));
   } catch (error) {
     console.error(error);
   }

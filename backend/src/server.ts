@@ -3,8 +3,6 @@ import cors from "cors";
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github2";
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
-
 import prisma from "./lib/prisma-client";
 import { User } from "@prisma/client";
 import routes from "./routes/";
@@ -14,7 +12,6 @@ const server = express();
 const {
   PORT,
   JWT_SECRET,
-  COOKIE_NAME,
   BACKEND_URL,
   FRONTEND_URL,
   GUEST_USERNAME,
@@ -25,7 +22,6 @@ const {
 server.use(cors({ origin: FRONTEND_URL, credentials: true }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser());
 
 passport.use(
   new GithubStrategy(
@@ -70,7 +66,7 @@ passport.use(
 server.use("/auth", routes.auth);
 server.use(async (req, res, next) => {
   try {
-    const token: string | undefined = req.cookies[COOKIE_NAME!];
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) return void res.sendStatus(401);
     const decoded = jwt.verify(token, JWT_SECRET!) as { id: number };
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
@@ -86,7 +82,6 @@ server.use(async (req, res, next) => {
   }
 });
 server.use((req, res, next) => {
-  if (req.headers.origin !== FRONTEND_URL) return void res.sendStatus(401);
   if ((req.user as User).username === GUEST_USERNAME && req.method === "DELETE")
     return void res.sendStatus(403);
 
