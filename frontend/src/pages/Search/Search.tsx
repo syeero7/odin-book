@@ -15,6 +15,7 @@ function Search() {
   const { handleChange } = useDebounceSearch();
   return (
     <main className={styles.container}>
+      <title>Needle | Search Users</title>
       <form>
         <FormField
           fieldType="input"

@@ -11,6 +11,7 @@ function Notifications() {
 
   return (
     <main className={styles.container}>
+      <title>Needle | Notifications</title>
       {!notifications.length ? (
         <p className={styles.empty}>No notifications</p>
       ) : (

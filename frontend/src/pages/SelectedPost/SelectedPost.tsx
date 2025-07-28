@@ -27,6 +27,7 @@ function SelectedPost() {
 
   return (
     <main className={styles.container}>
+      <title>{`Needle | Post: ${post.title}`}</title>
       <section className={styles.post}>
         <header>
           <ContentHeader

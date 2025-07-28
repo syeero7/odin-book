@@ -20,6 +20,7 @@ function CreatePost() {
 
   return (
     <main className={styles.container}>
+      <title>Needle | Create New Post</title>
       <form action={formAction} onSubmit={handleSubmit}>
         <FormField
           fieldType="input"

@@ -42,6 +42,7 @@ function Login() {
 
   return (
     <main className={styles.container}>
+      <title>Needle | Login</title>
       <img src={logo} alt="" width={200} height={200} />
 
       <article>

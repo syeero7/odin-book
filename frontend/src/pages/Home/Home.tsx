@@ -9,6 +9,7 @@ function Home() {
 
   return (
     <main className={styles.container}>
+      <title>Needle | Home</title>
       {posts.length > 0 ? (
         <ul>
           {posts.map((post) => (

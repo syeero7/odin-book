@@ -13,12 +13,14 @@ import styles from "./Profile.module.css";
 
 function Profile() {
   const { profile, content, users, posts } = useLoaderData<LoaderData>();
+  const title = `${content[0].toUpperCase()}${content.slice(1)}`;
 
   return (
     <main>
+      <title>{`Needle | Profile: ${title}`}</title>
       <ProfileContent {...profile} />
       <section className={styles.content}>
-        <h2>{`${content[0].toUpperCase()}${content.slice(1)}`}</h2>
+        <h2>{title}</h2>
         <hr />
         {(content === "posts" || content === "liked") && (
           <PostContent posts={posts} />
