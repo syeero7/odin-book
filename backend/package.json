@@ -2,7 +2,6 @@
   "name": "@odin-book/backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "prisma": {
     "seed": "tsx --env-file=.env prisma/seed.ts"
   },
