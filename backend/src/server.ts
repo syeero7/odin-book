@@ -13,7 +13,6 @@ const server = express();
 
 const {
   PORT,
-  NODE_ENV,
   JWT_SECRET,
   COOKIE_NAME,
   BACKEND_URL,
@@ -23,19 +22,7 @@ const {
   GITHUB_CLIENT_SECRET,
 } = process.env;
 
-server.use(
-  cors({
-    origin: (origin, cb) => {
-      if (origin === FRONTEND_URL || NODE_ENV === "development") {
-        cb(null, true);
-        return;
-      }
-
-      cb(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-);
+server.use(cors({ origin: FRONTEND_URL, credentials: true }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
@@ -99,6 +86,7 @@ server.use(async (req, res, next) => {
   }
 });
 server.use((req, res, next) => {
+  if (req.headers.origin !== FRONTEND_URL) return void res.sendStatus(401);
   if ((req.user as User).username === GUEST_USERNAME && req.method === "DELETE")
     return void res.sendStatus(403);
 
