@@ -3,8 +3,6 @@ import cors from "cors";
 import passport from "passport";
 import { Strategy as GithubStrategy } from "passport-github2";
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
-
 import prisma from "./lib/prisma-client";
 import { User } from "@prisma/client";
 import routes from "./routes/";
@@ -25,7 +23,6 @@ const {
 server.use(cors({ origin: FRONTEND_URL, credentials: true }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser());
 
 passport.use(
   new GithubStrategy(
@@ -86,7 +83,6 @@ server.use(async (req, res, next) => {
   }
 });
 server.use((req, res, next) => {
-  if (req.headers.origin !== FRONTEND_URL) return void res.sendStatus(401);
   if ((req.user as User).username === GUEST_USERNAME && req.method === "DELETE")
     return void res.sendStatus(403);
 
