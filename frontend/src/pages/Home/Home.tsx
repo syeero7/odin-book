@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router-dom";
 import { getAllPosts } from "@/lib/api";
 import type { Post as PostProps } from "@/types";
 import Post from "@/components/Post";
@@ -27,6 +27,7 @@ function Home() {
 
 export const loader = async () => {
   const res = await getAllPosts();
+  if (res.status === 401) return redirect("/login");
   if (!res.ok) throw res;
   return res.json();
 };
