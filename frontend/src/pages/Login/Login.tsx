@@ -1,33 +1,10 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import type { AuthUser } from "@/types";
-import { getCurrentUser } from "@/lib/api";
-import { setItem } from "@/lib/storage";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
 import logo from "@/assets/logo.webp";
 import styles from "./Login.module.css";
 
 function Login() {
-  const location = useLocation();
-  const { user, login } = useAuth();
-
-  useEffect(() => {
-    const queries = new URLSearchParams(location.search);
-
-    if (queries.has("token")) {
-      (async () => {
-        const token = queries.get("token")!;
-        setItem({ token });
-
-        const res = await getCurrentUser();
-        if (!res.ok) throw res;
-        const { user }: { user: AuthUser } = await res.json();
-        login(user);
-      })();
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+  const { user } = useAuth();
 
   const handleClick = (method: "github" | "guest") => {
     return () => {
