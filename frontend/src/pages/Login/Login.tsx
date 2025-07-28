@@ -1,19 +1,24 @@
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import type { AuthUser } from "@/types";
 import { getCurrentUser } from "@/lib/api";
+import { setItem } from "@/lib/storage";
 import { useAuth } from "@/components/AuthProvider";
-import styles from "./Login.module.css";
 import logo from "@/assets/logo.webp";
+import styles from "./Login.module.css";
 
 function Login() {
   const location = useLocation();
-  const { user, login, logout } = useAuth();
-  const queries = new URLSearchParams(location.search);
+  const { user, login } = useAuth();
 
   useEffect(() => {
-    if (queries.get("success") === "true") {
+    const queries = new URLSearchParams(location.search);
+
+    if (queries.has("token")) {
       (async () => {
+        const token = queries.get("token")!;
+        setItem({ token });
+
         const res = await getCurrentUser();
         if (!res.ok) throw res;
         const { user }: { user: AuthUser } = await res.json();
@@ -24,14 +29,6 @@ function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
-  useEffect(() => {
-    const loginRedirect =
-      queries.get("success") === "true" || !!queries.get("success");
-    if (user && !loginRedirect) logout();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
   const handleClick = (method: "github" | "guest") => {
     return () => {
       window.location.assign(
@@ -39,6 +36,8 @@ function Login() {
       );
     };
   };
+
+  if (user) return <Navigate to={"/"} replace />;
 
   return (
     <main className={styles.container}>

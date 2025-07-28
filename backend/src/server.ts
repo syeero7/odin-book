@@ -12,7 +12,6 @@ const server = express();
 const {
   PORT,
   JWT_SECRET,
-  COOKIE_NAME,
   BACKEND_URL,
   FRONTEND_URL,
   GUEST_USERNAME,
@@ -67,7 +66,7 @@ passport.use(
 server.use("/auth", routes.auth);
 server.use(async (req, res, next) => {
   try {
-    const token: string | undefined = req.cookies[COOKIE_NAME!];
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) return void res.sendStatus(401);
     const decoded = jwt.verify(token, JWT_SECRET!) as { id: number };
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
