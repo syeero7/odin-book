@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-inline-color: transparent;
+  box-shadow: none;
 
   img {
     margin-bottom: 1em;

@@ -43,10 +43,10 @@
   display: grid;
 
   li {
-    border-bottom: var(--border);
+    box-shadow: 0 3px 2px -2px var(--box-shadow-color);
 
     &:last-child {
-      border-bottom: none;
+      box-shadow: none;
     }
   }
 }

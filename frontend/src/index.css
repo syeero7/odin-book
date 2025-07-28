@@ -4,6 +4,9 @@
   --primary: hsl(240, 6%, 10%);
   --secondary: hsl(240, 5%, 34%);
   --accent: hsl(0, 84%, 60%);
+
+  --box-shadow-color: hsla(from var(--primary) h s l / 0.25);
+  --border: 2px solid hsla(from var(--secondary) h s l / 0.25);
 }
 
 * {
@@ -41,11 +44,11 @@ main {
   width: 100%;
   max-width: 38.5em;
   margin-inline: auto;
-  min-height: calc(100vh - 4.5em);
+  min-height: calc(100vh - 3.6em);
   padding: 0.6em;
 
-  --border: 2px solid hsla(from var(--secondary) h s l / 0.5);
-  border-inline: var(--border);
+  box-shadow: -1px 0 5px var(--box-shadow-color),
+    1px 0 5px var(--box-shadow-color);
 }
 
 .lucide {
@@ -59,16 +62,13 @@ li {
 }
 
 @media (width < 39.5em) {
-  main {
-    border-inline-color: transparent;
-  }
-
   #root {
     flex-direction: column-reverse;
 
     nav {
       top: unset;
       bottom: 0;
+      box-shadow: 0 -1px 5px var(--box-shadow-color);
     }
   }
 }

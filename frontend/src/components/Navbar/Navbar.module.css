@@ -1,6 +1,6 @@
 .navbar {
-  box-shadow: 0 0 5px hsla(from var(--primary) h s l / 0.7);
-  max-height: 4.5em;
+  box-shadow: 0 1px 5px var(--box-shadow-color);
+  max-height: 3.6em;
   position: sticky;
   background-color: var(--background);
   z-index: 1;
@@ -10,7 +10,7 @@
     width: 100%;
     max-width: 38.5em;
     margin-inline: auto;
-    padding: 1em 0.5em;
+    padding: 0.5em;
     display: flex;
     align-items: center;
     gap: 1em;
