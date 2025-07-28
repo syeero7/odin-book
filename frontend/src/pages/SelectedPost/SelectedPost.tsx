@@ -34,7 +34,7 @@ function SelectedPost() {
             id={id}
             author={author}
             authorId={authorId}
-            userId={user!.id}
+            userId={user?.id}
             createdAt={createdAt}
             contentName="post"
           />

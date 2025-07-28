@@ -14,7 +14,7 @@ function Comment({ id, content, createdAt, user, userId }: CommentProps) {
         id={id}
         author={user}
         authorId={userId}
-        userId={currentUser!.id}
+        userId={currentUser?.id}
         createdAt={createdAt}
         contentName="comment"
       />
