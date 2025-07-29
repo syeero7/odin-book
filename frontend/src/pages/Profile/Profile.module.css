@@ -1,12 +1,12 @@
 .profile {
   display: grid;
-  gap: 1em;
+  gap: 0.5em;
 
   header {
     display: grid;
     justify-content: flex-start;
     padding-left: 1em;
-    gap: 1.5em;
+    gap: 0.75em;
 
     img {
       border-radius: 50%;
@@ -17,7 +17,7 @@
       text-align: center;
     }
 
-    h1 + div:has(form) {
+    .follow {
       display: flex;
       justify-content: center;
       margin-top: 0.75em;
@@ -80,6 +80,7 @@
   .profile header {
     align-items: center;
     grid-auto-flow: column;
+    gap: 1.5em;
   }
 
   .links {
