@@ -36,9 +36,7 @@ function NotificationLink({
 }: NotificationProps) {
   return (
     <Link
-      to={`/${type === "FOLLOW" ? "users" : "posts"}/${
-        type === "FOLLOW" ? senderId : postId
-      }`}
+      to={type === "FOLLOW" ? `/users/${senderId}/profile` : `/posts/${postId}`}
       viewTransition>
       <img src={sender.avatarUrl} alt="" width={36} height={36} />
 
