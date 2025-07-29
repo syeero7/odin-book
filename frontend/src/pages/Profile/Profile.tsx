@@ -49,9 +49,11 @@ function ProfileContent({
         <div>
           <h1>{username.startsWith("#") ? username.slice(1) : username}</h1>
 
-          {id !== user?.id && (
-            <FollowButton followed={followers.length === 1} userId={id} />
-          )}
+          <div className={styles.follow}>
+            {id !== user?.id && (
+              <FollowButton followed={followers.length === 1} userId={id} />
+            )}
+          </div>
         </div>
       </header>
 

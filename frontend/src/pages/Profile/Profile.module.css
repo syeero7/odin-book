@@ -17,10 +17,11 @@
       text-align: center;
     }
 
-    h1 + form {
-      max-width: fit-content;
-      margin-inline: auto;
-      margin-top: 0.5em;
+    h1 + div:has(form) {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.75em;
+      min-height: 2.05em;
     }
   }
 }
@@ -79,18 +80,6 @@
   .profile header {
     align-items: center;
     grid-auto-flow: column;
-    min-height: 295px;
-
-    div:has(h1) {
-      position: relative;
-    }
-
-    h1 + form {
-      position: absolute;
-      margin-top: 0;
-      transform: translate(25%, 0.5em);
-      left: 0;
-    }
   }
 
   .links {
