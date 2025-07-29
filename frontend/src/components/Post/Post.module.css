@@ -30,6 +30,7 @@
 
   p {
     font-size: 0.96em;
+    margin-top: 0.4em;
     display: -webkit-box;
     line-clamp: 3;
     overflow: hidden;
@@ -39,9 +40,8 @@
   }
 
   img {
-    max-width: 100%;
-    object-fit: contain;
-    margin-block: 0.75em;
+    display: block;
+    margin-inline: auto;
   }
 }
 
