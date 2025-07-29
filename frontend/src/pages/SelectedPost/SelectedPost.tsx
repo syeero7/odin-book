@@ -42,7 +42,7 @@ function SelectedPost() {
           <h1>{title}</h1>
         </header>
 
-        {imageUrl && <img src={imageUrl} alt="" width={280} height={280} />}
+        {imageUrl && <img src={imageUrl} alt="" />}
         {content && <p>{content}</p>}
 
         <div className={styles.buttons}>
