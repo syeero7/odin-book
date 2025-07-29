@@ -8,7 +8,7 @@ function Login() {
 
   const handleClick = (method: "github" | "guest") => {
     return () => {
-      window.location.assign(
+      window.location.replace(
         `${import.meta.env.VITE_BACKEND_URL}/auth/${method}`
       );
     };

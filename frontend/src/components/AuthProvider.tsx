@@ -24,7 +24,7 @@ export const useAuth = (): AuthCtx => {
 function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthCtx["user"]>(null);
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname, search } = useLocation();
 
   const logout = async () => {
     setUser(null);
@@ -34,12 +34,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (user: AuthUser) => {
     setUser(user);
-    return navigate("/", { viewTransition: true, replace: true });
+    const url = pathname.startsWith("/login") ? "/" : pathname;
+    return navigate(url, { viewTransition: true, replace: true });
   };
 
   useEffect(() => {
     if (user) return;
-    const queries = new URLSearchParams(location.search);
+    const queries = new URLSearchParams(search);
 
     if (queries.has("token") || storage.getItem()) {
       if (queries.has("token")) {
@@ -57,7 +58,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       navigate("/login", { viewTransition: true, replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, location.search]);
+  }, [user, search]);
 
   return <AuthContext value={{ user, logout, login }}>{children}</AuthContext>;
 }
