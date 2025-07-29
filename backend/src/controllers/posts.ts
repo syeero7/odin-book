@@ -320,11 +320,20 @@ export const likePost = [
       return void res.sendStatus(204);
     }
 
-    await prisma.like.delete({
-      where: {
-        postId_userId: { postId, userId },
-      },
-    });
+    await prisma.$transaction([
+      prisma.like.delete({
+        where: {
+          postId_userId: { postId, userId },
+        },
+      }),
+      prisma.notification.deleteMany({
+        where: {
+          type: "LIKE",
+          postId,
+          senderId: userId,
+        },
+      }),
+    ]);
 
     res.sendStatus(204);
   }),

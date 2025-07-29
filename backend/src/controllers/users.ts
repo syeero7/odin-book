@@ -188,37 +188,48 @@ export const followUser = [
     const { userId: user2 } = req.params;
 
     if (req.query.follow === "true") {
-      await prisma.user.update({
-        where: { id: user1 },
-        data: {
-          following: {
-            connect: {
-              id: user2,
+      await prisma.$transaction([
+        prisma.user.update({
+          where: { id: user1 },
+          data: {
+            following: {
+              connect: {
+                id: user2,
+              },
             },
           },
-        },
-      });
-      await prisma.notification.create({
-        data: {
-          type: "FOLLOW",
-          senderId: user1,
-          recipientId: user2,
-        },
-      });
+        }),
+        prisma.notification.create({
+          data: {
+            type: "FOLLOW",
+            senderId: user1,
+            recipientId: user2,
+          },
+        }),
+      ]);
 
       return void res.sendStatus(204);
     }
 
-    await prisma.user.update({
-      where: { id: user1 },
-      data: {
-        following: {
-          disconnect: {
-            id: user2,
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: user1 },
+        data: {
+          following: {
+            disconnect: {
+              id: user2,
+            },
           },
         },
-      },
-    });
+      }),
+      prisma.notification.deleteMany({
+        where: {
+          type: "FOLLOW",
+          senderId: user1,
+          recipientId: user2,
+        },
+      }),
+    ]);
 
     res.sendStatus(204);
   }),
